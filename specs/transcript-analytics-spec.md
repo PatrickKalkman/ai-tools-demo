@@ -22,29 +22,29 @@
 ## Context
 
 ### Beginning context
-- `src/spec_based_ai_coding/main.py`
+- `src/aitools/main.py`
 - `pyproject.toml` (readonly)
 
 ### Ending context
-- `src/spec_based_ai_coding/main.py`
+- `src/aitools/main.py`
 - `pyproject.toml`
-- `src/spec_based_ai_coding/llm.py` (new file)
-- `src/spec_based_ai_coding/word_counter.py` (new file)
-- `src/spec_based_ai_coding/data_types.py` (new file)
-- `src/spec_based_ai_coding/constants.py` (new file)
+- `src/aitools/llm.py` (new file)
+- `src/aitools/word_counter.py` (new file)
+- `src/aitools/data_types.py` (new file)
+- `src/aitools/constants.py` (new file)
 
 ## Low-Level Tasks
 > Ordered from start to finish
 
 1. Create common word blacklist.
 ```aider
-CREATE src/spec_based_ai_coding/constants.py: 
+CREATE src/aitools/constants.py: 
     CREATE COMMON_WORDS_BLACKLIST = ['the', 'and', ...add 50 more common words]
 ```
 
 2. Create our data types.
 ```aider
-CREATE src/spec_based_ai_coding/data_types.py:
+CREATE src/aitools/data_types.py:
 
     CREATE pydantic types:
 
@@ -60,7 +60,7 @@ CREATE src/spec_based_ai_coding/data_types.py:
 
 3. Create our word counter & filter out & limit by count threshold.
 ```aider
-CREATE src/spec_based_ai_coding/word_counter.py:
+CREATE src/aitools/word_counter.py:
     CREATE word_counter(script: str, min_count_threshold: int = 10) -> WordCounts:
         Remove punctuation from script and make all words lowercase,
         Use the COMMON_WORDS_BLACKLIST to filter out common words,
@@ -70,7 +70,7 @@ CREATE src/spec_based_ai_coding/word_counter.py:
 
 4. Create our LLM function using the code block below.
 ```python
-# CREATE src/spec_based_ai_coding/llm.py: Use code block below no changes.
+# CREATE src/aitools/llm.py: Use code block below no changes.
 
     from typing import List
     from pydantic import BaseModel
@@ -104,7 +104,7 @@ CREATE src/spec_based_ai_coding/word_counter.py:
 5. Update our main function to use new count and analysis functions.
 
 ```aider
-UPDATE src/spec_based_ai_coding/main.py:
+UPDATE src/aitools/main.py:
     CREATE a new typer cli application:
         CREATE @app.command() def analyze_transcript(path_to_script_text_file, min_count_threshold: int = 10):
             Read file, count words, run analysis, rich print results,
